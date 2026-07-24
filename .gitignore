@@ -1,0 +1,32 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+# Se recomienda versionar .terraform.lock.hcl
+
+# Variables locales (pueden contener datos sensibles de entorno)
+terraform.tfvars
+*.auto.tfvars
+!terraform.tfvars.example
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Secrets / credenciales
+*.pem
+*.key
+.env
+.env.*
+
+.vscode/
