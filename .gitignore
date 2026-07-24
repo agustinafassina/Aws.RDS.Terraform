@@ -9,9 +9,9 @@ override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
-# Se recomienda versionar .terraform.lock.hcl
+# It is recommended to version .terraform.lock.hcl
 
-# Variables locales (pueden contener datos sensibles de entorno)
+# Local variables (may contain sensitive environment data)
 terraform.tfvars
 *.auto.tfvars
 !terraform.tfvars.example
@@ -23,7 +23,7 @@ terraform.tfvars
 .DS_Store
 Thumbs.db
 
-# Secrets / credenciales
+# Secrets / credentials
 *.pem
 *.key
 .env
