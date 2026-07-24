@@ -1,10 +1,9 @@
-# ☁️ AWS RDS Terraform — Secure, Multi-AZ, Production-Ready Template
+# ☁️ AWS RDS Terraform Template
 Terraform template to deploy **Amazon RDS** (PostgreSQL, MySQL, or MariaDB) following AWS best practices for **security**, **high availability**, **disaster recovery**, and **performance**.
 
 All documentation, usage guidance, and examples live in this README. The `.tf` files contain code only.
 
 ## 🏗️ Architecture
-
 ![AWS RDS Secure Architecture](docs/architecture.png)
 
 | Layer | What you get |
@@ -13,59 +12,6 @@ All documentation, usage guidance, and examples live in this README. The `.tf` f
 | **Database** | Multi-AZ primary/standby + optional read replica |
 | **Security** | KMS encryption, Secrets Manager, restrictive SG, TLS |
 | **Observability** | CloudWatch logs, alarms, Performance Insights |
-
-<details>
-<summary>Mermaid version (editable / GitHub fallback)</summary>
-
-```mermaid
-flowchart TB
-  subgraph AWS["AWS Account / Region"]
-    direction TB
-
-    subgraph VPC["VPC (new or existing)"]
-      direction TB
-
-      subgraph Public["Public subnets"]
-        NAT["NAT Gateway"]
-        IGW["Internet Gateway"]
-        IGW --> NAT
-      end
-
-      subgraph Private["Private subnets — DB Subnet Group (≥2 AZs)"]
-        direction LR
-        RDS_P["RDS Primary<br/>encrypted · Multi-AZ"]
-        RDS_S["RDS Standby"]
-        RDS_R["Read Replica<br/>(optional)"]
-        RDS_P <-->|"sync"| RDS_S
-        RDS_P -->|"async"| RDS_R
-      end
-
-      APP["Application / clients<br/>(allowed SG or CIDR)"]
-      APP -->|"TLS · least privilege"| RDS_P
-      Private -.->|"egress via NAT"| NAT
-    end
-
-    KMS["KMS CMK<br/>at-rest encryption"]
-    SM["Secrets Manager<br/>credentials"]
-    CW["CloudWatch<br/>logs · alarms · PI"]
-
-    KMS -.->|"encrypts"| RDS_P
-    KMS -.->|"encrypts"| SM
-    RDS_P -->|"exports"| CW
-    SM -.->|"username / password / host"| APP
-  end
-
-  classDef aws fill:#232F3E,stroke:#FF9900,color:#fff
-  classDef net fill:#1B4F72,stroke:#5DADE2,color:#fff
-  classDef data fill:#145A32,stroke:#58D68D,color:#fff
-  classDef svc fill:#4A235A,stroke:#BB8FCE,color:#fff
-  class AWS aws
-  class VPC,Public,Private,NAT,IGW,APP net
-  class RDS_P,RDS_S,RDS_R data
-  class KMS,SM,CW svc
-```
-
-</details>
 
 ## 📁 Repository structure
 ```
@@ -78,6 +24,9 @@ flowchart TB
 ├── versions.tf                  # Terraform / provider versions
 ├── terraform.tfvars.example     # Sample values (copy to terraform.tfvars)
 ├── README.md                    # This documentation
+├── docs/
+│   ├── architecture.png         # Architecture diagram
+│   └── dotnet-consumption-guide.md  # .NET 10 + Secrets Manager usage
 └── modules/
     ├── networking/              # VPC, private subnets (2+ AZs), NAT, DB subnet group
     ├── kms/                     # CMK with rotation for RDS, Secrets, and Performance Insights
@@ -159,6 +108,13 @@ terraform init
 terraform plan
 terraform apply
 ```
+
+### Consume from .NET (Secrets Manager)
+
+Credentials are **not** in Terraform variables. Your API reads them from Secrets Manager at runtime.
+
+Full walkthrough for **.NET 10** (NuGet, IAM, Npgsql/MySQL, caching, local SSO):  
+➡️ **[docs/dotnet-consumption-guide.md](docs/dotnet-consumption-guide.md)**
 
 Get connection details:
 
