@@ -88,7 +88,7 @@ resource "aws_db_parameter_group" "this" {
     for_each = contains(["mysql", "mariadb"], var.engine) ? [1] : []
     content {
       name         = "general_log"
-      value        = "1"
+      value        = var.enable_general_log ? "1" : "0"
       apply_method = "immediate"
     }
   }

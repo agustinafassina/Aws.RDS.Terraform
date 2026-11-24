@@ -206,6 +206,12 @@ variable "enabled_cloudwatch_logs_exports" {
   default     = null
 }
 
+variable "enable_general_log" {
+  description = "Enable the MySQL/MariaDB general query log (logs every statement; debugging only)"
+  type        = bool
+  default     = false
+}
+
 variable "auto_minor_version_upgrade" {
   description = "Auto minor version upgrade"
   type        = bool
