@@ -77,7 +77,7 @@ If you do not set `allowed_cidr_blocks` or `allowed_security_group_ids`, the VPC
 ### ⚙️ Parameter groups and logs by engine
 **PostgreSQL:** `rds.force_ssl`, `log_connections`, `log_disconnections`, `log_statement=ddl`, `log_min_duration_statement=1000` (slow queries >1s), `shared_preload_libraries=pg_stat_statements`. CloudWatch logs: `postgresql`, `upgrade`. You can add `pgaudit` via additional parameters on the RDS module.
 
-**MySQL / MariaDB:** `require_secure_transport`, `slow_query_log`, `long_query_time`, `general_log`, `log_output=FILE`. Logs: `error`, `general`, `slowquery` (+ `audit` on MariaDB). MariaDB includes an option group with `MARIADB_AUDIT_PLUGIN`.
+**MySQL / MariaDB:** `require_secure_transport`, `slow_query_log`, `long_query_time`, `log_output=FILE`. Logs: `error`, `slowquery` (+ `audit` on MariaDB). The general query log is **off by default**; set `enable_general_log = true` only for temporary debugging (it also adds the `general` log export). MariaDB includes an option group with `MARIADB_AUDIT_PLUGIN`.
 
 ### 🛡️ High availability and DR
 - Multi-AZ

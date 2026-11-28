@@ -296,6 +296,12 @@ variable "enabled_cloudwatch_logs_exports" {
   default     = null
 }
 
+variable "enable_general_log" {
+  description = "Enable the MySQL/MariaDB general query log. Logs every statement (performance, cost and sensitive-data impact) - use only for temporary debugging"
+  type        = bool
+  default     = false
+}
+
 variable "create_cloudwatch_alarms" {
   description = "Create CloudWatch alarms for CPU, storage, and connections"
   type        = bool

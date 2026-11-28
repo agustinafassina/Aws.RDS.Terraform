@@ -3,10 +3,12 @@ locals {
     Component = "rds"
   })
 
+  general_log_export = var.enable_general_log ? ["general"] : []
+
   default_cloudwatch_logs = {
     postgres = ["postgresql", "upgrade"]
-    mysql    = ["error", "general", "slowquery"]
-    mariadb  = ["error", "general", "slowquery", "audit"]
+    mysql    = concat(["error", "slowquery"], local.general_log_export)
+    mariadb  = concat(["error", "slowquery", "audit"], local.general_log_export)
   }
 
   cloudwatch_logs_exports = coalesce(

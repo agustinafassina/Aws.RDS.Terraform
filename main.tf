@@ -155,6 +155,7 @@ module "rds" {
   performance_insights_enabled          = var.performance_insights_enabled
   performance_insights_retention_period = var.performance_insights_retention_period
   enabled_cloudwatch_logs_exports       = var.enabled_cloudwatch_logs_exports
+  enable_general_log                    = var.enable_general_log
   auto_minor_version_upgrade            = var.auto_minor_version_upgrade
 
   create_read_replica         = var.create_read_replica
